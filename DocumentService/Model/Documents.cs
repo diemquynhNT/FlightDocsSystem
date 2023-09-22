@@ -7,19 +7,16 @@ namespace DocumentService.Model
     {
         [Key]
         public string IdDocument { get; set; }
-        [Required]
         [MaxLength(100)]
         public string NameDoc { get; set; }
-        [Required]
-        [MaxLength(100)]
-        public string Creator { get; set; }
-        [Required]
+        
+
         public DateTime CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string? Note { get; set; }
-        [Required]
         public string version { get; set; }
         [Required]
+        [MaxLength(100)]
         public string IdUser { get; set; }
 
         public string IdFlight { get; set; }

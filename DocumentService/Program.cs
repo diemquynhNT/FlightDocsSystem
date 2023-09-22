@@ -1,6 +1,7 @@
 using DocumentService.Data;
 using DocumentService.Services;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,15 @@ builder.Services.AddDbContext<MyDBContext>(option =>
 });
 
 builder.Services.AddScoped<IDocument, DocumentServices>();
+builder.Services.AddScoped<IFlight, FlightService>();
+
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.MaxRequestBodySize = 1073741824; 
+});
+builder.Services.AddAutoMapper(typeof(Program));
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
