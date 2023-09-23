@@ -48,6 +48,20 @@ namespace DocumentService.Controllers
             }
         }
 
+
+        [HttpPut("UpdateFlight")]
+        public async Task<IActionResult> UpdateFlight(string id, [FromForm] Flight flight)
+        {
+            var fl = await _context.GetFlightById(id);
+            if (fl == null)
+            {
+                return NotFound("Khong tim thay air");
+            }
+            await _context.UpdateFlight(flight,id);
+            return Ok(" cap nhat thanh cong");
+        }
+
+
         [HttpDelete("DeleteFlight")]
         public async Task<ActionResult> DeleteFlight(string idFlight)
         {

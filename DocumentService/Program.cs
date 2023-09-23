@@ -16,6 +16,8 @@ builder.Services.AddDbContext<MyDBContext>(option =>
 
 builder.Services.AddScoped<IDocument, DocumentServices>();
 builder.Services.AddScoped<IFlight, FlightService>();
+builder.Services.AddScoped<ITypeDocument, TypeDocumentService>();
+
 
 builder.Services.Configure<IISServerOptions>(options =>
 {

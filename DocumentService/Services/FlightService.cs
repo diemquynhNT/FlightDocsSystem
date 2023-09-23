@@ -16,8 +16,8 @@ namespace DocumentService.Services
 
         public async Task<Flight> AddFlight(Flight flight)
         {
-            string randomId = random.Generate(10);
-            flight.IdFlight = "Flight" +randomId ;
+            string randomId = random.Generate(5);
+            flight.IdFlight = "Flight-" +randomId ;
             flight.StatusFlight = true;
             _context.Add(flight);
             _context.SaveChanges();
@@ -46,9 +46,11 @@ namespace DocumentService.Services
             return _context.flights.Where(t=>t.IdFlight==id).FirstOrDefault();
         }
 
-        public Task<Flight> UpdateFlight(Flight flight, string idFlight)
+        public async Task<Flight> UpdateFlight(Flight flight, string idFlight)
         {
-            throw new NotImplementedException();
+            _context.flights.Update(flight);
+            _context.SaveChanges();
+            return flight;
         }
     }
 }
