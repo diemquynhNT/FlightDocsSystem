@@ -28,6 +28,25 @@ namespace DocumentService.Controllers
             _context = idocument;
             _mapper = imapper;
         }
+        [HttpGet("ListAllDocument")]
+        public List<Documents> ListAllDocument()
+        {
+            return _context.GetAllDocument();
+
+        }
+        [HttpGet("ListAllDocumentForUser")]
+        public List<Documents> ListAllDocumentForUser(string idUser)
+        {
+            return _context.GetAllDocumentByIdUser(idUser);
+
+        }
+        [HttpGet("GetDetail")]
+        public Task<Documents> GetDocumentById(string idDoc)
+        {
+            return _context.GetDocumentById(idDoc);
+
+        }
+
         [HttpPost("PostSingleFile")]
         public async Task<ActionResult> PostSingleFile(string IdUser, string idFlight,[FromForm]DocumentFileVM doc,IFormFile file)
         {
@@ -47,6 +66,24 @@ namespace DocumentService.Controllers
                 throw;
             }
         }
+
+        [HttpDelete("DeleteDocument")]
+        public async Task<ActionResult> DeleteDocument(string idUser,string idDoc)
+        {
+            try
+            {
+                bool documents = await _context.DeleteDocument(idDoc,idUser);
+                if (documents == true)
+                    return Ok("xoa thanh cong");
+                return BadRequest("loi");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
 
     }
 }

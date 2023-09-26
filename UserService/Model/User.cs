@@ -6,7 +6,7 @@ namespace UserService.Model
     public class User
     {
         [Key]
-        public int idUser { get; set; }
+        public string idUser { get; set; }  
         [Required]
         [MaxLength(100)]
         public string nameUser { get; set; }
@@ -17,6 +17,8 @@ namespace UserService.Model
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         public string phone { get; set; }
         [Required]
+        public DateTime hireDate { get; set; }
+
         public bool statusUser { get; set; }
 
         public string idGroup { get; set; }

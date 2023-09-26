@@ -69,6 +69,7 @@ namespace DocumentService.Services
             return documents;
         }
 
+        //cap thi thi tạo lai doc
         public Task<Documents> UpdateDocument(string idUser)
         {
             throw new NotImplementedException();

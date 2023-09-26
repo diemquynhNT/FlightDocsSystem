@@ -49,15 +49,15 @@ namespace UserService.Migrations
 
             modelBuilder.Entity("UserService.Model.User", b =>
                 {
-                    b.Property<int>("idUser")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idUser"), 1L, 1);
+                    b.Property<string>("idUser")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("emailAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("hireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("idGroup")
                         .IsRequired()
