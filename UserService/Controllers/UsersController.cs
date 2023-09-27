@@ -39,6 +39,15 @@ namespace UserService.Controllers
         {
             try
             {
+                bool checkPassword = _context.ValidatePassword(userModel.passWord);
+                if(!checkPassword)
+                    return BadRequest("pass khong du yeu cau");
+                bool checkMail = _context.ValidateEmail(userModel.emailAddress);
+                if (!checkMail)
+                    return BadRequest("email da co nguoi su dung");
+                bool checkPhone = _context.ValidatePhone(userModel.phone);
+                if (!checkPassword)
+                    return BadRequest("sdt da co nguoi su dung");
                 var users = _mapper.Map<User>(userModel);
                 await _context.AddUser(users);
                 return Ok("tao thanh cong");
@@ -61,6 +70,31 @@ namespace UserService.Controllers
             return Ok(" cap nhat thanh cong");
         }
 
+        [HttpPut("TerminateUser")]
+        public async Task<IActionResult> TerminateUser([FromForm] List<string> listUser)
+        {
+            
+            foreach (var user in listUser)
+            {
+                var u = await _context.GetUserById(user);
+                if (u == null)
+                    return BadRequest("loi");
+                _context.TerminateUser(u);
+            }    
+            return Ok("da khoa tk");
+        }
+
+        [HttpPost("ResetAccount")]
+        public async Task<IActionResult> ResetAccount([FromForm] string idUser)
+        {
+            var u = await _context.GetUserById(idUser);
+            if (u == null)
+                BadRequest("loi");
+            _context.ResetAccount(u);
+            return Ok("da khoa tk");
+        }
+
+
 
         [HttpDelete("DeleteUser")]
         public async Task<ActionResult> DeleteUser(string idUser)
@@ -77,6 +111,7 @@ namespace UserService.Controllers
                 throw;
             }
         }
+     
 
 
     }

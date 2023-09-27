@@ -14,6 +14,10 @@ namespace UserService.Dto
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         public string phone { get; set; }
         public DateTime hireDate { get; set; }
+        [Required]
+        public string uerName { get; set; }
+        [Required]
+        public string passWord { get; set; }
 
         public string idGroup { get; set; }
     }

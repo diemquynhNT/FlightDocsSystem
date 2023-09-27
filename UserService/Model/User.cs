@@ -20,6 +20,10 @@ namespace UserService.Model
         public DateTime hireDate { get; set; }
 
         public bool statusUser { get; set; }
+        [Required]       
+        public string uerName { get; set; }
+        [Required]
+        public string passWord { get; set; }
 
         public string idGroup { get; set; }
         [ForeignKey("idGroup")]

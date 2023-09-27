@@ -16,9 +16,12 @@ namespace UserService.Services
         public string GetToken(User user);
         public Task<User> ChangeAccount(User users);
         public Task<string> ConfirmAccount(string idUser, string passWord);
-        public Task<User> TerminateUser(List<User> listUser);
+        public Task<User> TerminateUser(User user);
         // khoi phuc va gui mk moi cho mail
-        public Task<User> ResetAccount(string idUser);
+        public Task<User> ResetAccount(User user);
+        public bool ValidatePassword(string password);
+        public bool ValidateEmail(string password);
+        public bool ValidatePhone(string password);
 
 
 
