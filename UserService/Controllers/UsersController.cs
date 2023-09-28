@@ -46,7 +46,7 @@ namespace UserService.Controllers
                 if (!checkMail)
                     return BadRequest("email da co nguoi su dung");
                 bool checkPhone = _context.ValidatePhone(userModel.phone);
-                if (!checkPassword)
+                if (!checkPhone)
                     return BadRequest("sdt da co nguoi su dung");
                 var users = _mapper.Map<User>(userModel);
                 await _context.AddUser(users);
@@ -91,7 +91,7 @@ namespace UserService.Controllers
             if (u == null)
                 BadRequest("loi");
             _context.ResetAccount(u);
-            return Ok("da khoa tk");
+            return Ok("da reset tk");
         }
 
 

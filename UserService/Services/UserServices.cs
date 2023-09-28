@@ -111,7 +111,7 @@ namespace UserService.Services
             user.passWord = newPassword;
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Tên người gửi", "contactcentersgt@gmail.com"));
+            message.From.Add(new MailboxAddress("Contact", "contactcentersgt@gmail.com"));
             message.To.Add(new MailboxAddress("Tên người nhận", user.emailAddress));
             message.Subject = "Reset Account";
             message.Body = new TextPart("plain")
