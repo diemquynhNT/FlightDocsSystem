@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using UserService.Dto;
 using UserService.Model;
 using UserService.Services;
@@ -111,7 +112,35 @@ namespace UserService.Controllers
                 throw;
             }
         }
-     
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Validate([FromBody] LoginModel model)
+        {
+            try
+            {
+                User user = await _context.LoginUser(model);
+                if (user==null)
+                {
+                    return Ok(new
+                    {
+                        Success = false,
+                        Message = "Invalid user/pass"
+                    });
+                }
+                return Ok(new
+                {
+                    Success = true,
+                    Message = "Authentication success",
+                    Data = _context.GetToken(user)
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
 
 
     }

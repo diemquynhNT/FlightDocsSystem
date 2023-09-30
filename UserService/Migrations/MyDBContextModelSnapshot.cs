@@ -42,6 +42,10 @@ namespace UserService.Migrations
                     b.Property<string>("note")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("permissionGroup")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("idGroup");
 
                     b.ToTable("groups");
@@ -79,7 +83,7 @@ namespace UserService.Migrations
                     b.Property<bool>("statusUser")
                         .HasColumnType("bit");
 
-                    b.Property<string>("uerName")
+                    b.Property<string>("userName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

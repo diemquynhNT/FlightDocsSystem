@@ -12,8 +12,8 @@ using UserService.Data;
 namespace UserService.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20230926110955_fixUserTable")]
-    partial class fixUserTable
+    [Migration("20230930143111_initDB")]
+    partial class initDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,10 @@ namespace UserService.Migrations
                     b.Property<string>("note")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("permissionGroup")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("idGroup");
 
                     b.ToTable("groups");
@@ -70,12 +74,20 @@ namespace UserService.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("passWord")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("statusUser")
                         .HasColumnType("bit");
+
+                    b.Property<string>("userName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("idUser");
 

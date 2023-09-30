@@ -1,6 +1,11 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MimeKit;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Text.RegularExpressions;
 using UserService.Data;
 using UserService.Dto;
@@ -12,10 +17,12 @@ namespace UserService.Services
     {
         private MyDBContext _context;
         private GenerateAlphanumericId generateId;
+        private readonly AppSettings _appSettings;
 
-        public UserServices(MyDBContext context) {
+        public UserServices(MyDBContext context, IOptionsMonitor<AppSettings> optionsMonitor) {
             _context = context;
             generateId = new GenerateAlphanumericId();
+            _appSettings = optionsMonitor.CurrentValue;
         }
         public bool ValidatePassword(string password)
         {
@@ -39,9 +46,6 @@ namespace UserService.Services
                 return true;
             return false;
         }
-
-
-
 
         public async Task<User> AddUser(User users)
         {
@@ -79,11 +83,6 @@ namespace UserService.Services
             return _context.users.ToList();
         }
 
-        public string GetToken(User user)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<User> GetUserById(string idUser)
         {
             return _context.users.Where(t => t.idUser == idUser).FirstOrDefault();
@@ -94,9 +93,45 @@ namespace UserService.Services
             throw new NotImplementedException();
         }
 
-        public Task<User> LoginUser()
+        public string GetToken(User user)
         {
-            throw new NotImplementedException();
+            var jwtToken = new JwtSecurityTokenHandler();
+            var secretKeyBytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
+            var per = _context.groups.Where(t => t.idGroup == user.idGroup).FirstOrDefault();
+            var tokenDescription = new SecurityTokenDescriptor
+            {
+                //đặc trưng người dùng
+                //TRUYỀN vào danh sách claim
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, user.nameUser),
+                    new Claim(ClaimTypes.Email, user.emailAddress),
+                    new Claim("UserName", user.userName),
+                    new Claim("Id", user.idUser.ToString()),
+                    new Claim("Permission", per.permissionGroup),
+                    new Claim("TokenId", Guid.NewGuid().ToString()),
+                }),
+
+                Expires = DateTime.UtcNow.AddMinutes(1),
+
+                // Adding roles to the token
+                Claims = new Dictionary<string, object>
+                {
+                    { "roles", user.idGroup }
+                },
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey
+                (secretKeyBytes), SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = jwtToken.CreateToken(tokenDescription);
+            return jwtToken.WriteToken(token);//tra ve chuoi 
+        }
+
+        public async Task<User> LoginUser(LoginModel login)
+        {
+            var user = _context.users.SingleOrDefault(u => u.userName == login.UserName
+            && u.passWord == login.Passworduser.ToString());
+            return user;
         }
 
         public Task<User> LogoutUser()

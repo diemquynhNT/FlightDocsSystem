@@ -19,6 +19,7 @@ namespace UserService.Services
             group.idGroup = "G" + generateAlphanumericId.GenerateId(5);
             group.creator = idUser;
             group.createDate= DateTime.Now;
+            group.permissionGroup = "NoPermission";
             _context.Add(group);
             _context.SaveChanges();
             return group;

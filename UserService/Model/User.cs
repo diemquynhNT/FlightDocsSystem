@@ -21,7 +21,7 @@ namespace UserService.Model
 
         public bool statusUser { get; set; }
         [Required]       
-        public string uerName { get; set; }
+        public string userName { get; set; }
         [Required]
         public string passWord { get; set; }
 

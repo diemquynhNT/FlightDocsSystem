@@ -1,4 +1,5 @@
-﻿using UserService.Model;
+﻿using UserService.Dto;
+using UserService.Model;
 
 namespace UserService.Services
 {
@@ -11,8 +12,8 @@ namespace UserService.Services
         public Task<bool> DeleteUser(string idUser);
 
         public bool IsValidUser(string idUser);
-        public Task<User> LoginUser();
-        public Task<User> LogoutUser();
+     
+        public Task<User> LoginUser(LoginModel login);
         public string GetToken(User user);
         public Task<User> ChangeAccount(User users);
         public Task<string> ConfirmAccount(string idUser, string passWord);

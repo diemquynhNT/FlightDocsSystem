@@ -11,7 +11,7 @@ namespace UserService.Mapper
               .ForMember(dest => dest.nameUser, act => act.MapFrom(src => src.nameUser))
               .ForMember(dest => dest.phone, act => act.MapFrom(src => src.phone))
               .ForMember(dest => dest.emailAddress, act => act.MapFrom(src => src.emailAddress))
-              .ForMember(dest => dest.uerName, act => act.MapFrom(src => src.uerName))
+              .ForMember(dest => dest.userName, act => act.MapFrom(src => src.uerName))
               .ForMember(dest => dest.passWord, act => act.MapFrom(src => src.passWord))
               .ForMember(dest => dest.idGroup, act => act.MapFrom(src => src.idGroup));
 

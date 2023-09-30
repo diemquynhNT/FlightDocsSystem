@@ -17,7 +17,8 @@ namespace UserService.Migrations
                     createDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    nameGroup = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    nameGroup = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    permissionGroup = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,7 +33,10 @@ namespace UserService.Migrations
                     nameUser = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     emailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    hireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     statusUser = table.Column<bool>(type: "bit", nullable: false),
+                    userName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    passWord = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     idGroup = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>

@@ -4,6 +4,7 @@ using DocumentService.Data;
 using DocumentService.Dto;
 using DocumentService.Model;
 using DocumentService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -28,6 +29,7 @@ namespace DocumentService.Controllers
             _context = idocument;
             _mapper = imapper;
         }
+        [Authorize(Policy = "NoPermissionPolicy")]
         [HttpGet("ListAllDocument")]
         public List<Documents> ListAllDocument()
         {

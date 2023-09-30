@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserService.Model
 {
@@ -13,7 +14,11 @@ namespace UserService.Model
         [Required]
         [MaxLength(100)]
         public string nameGroup { get; set; }
+        [Required]
+        public string permissionGroup { get; set; }
 
         public virtual ICollection<User> users { get; set; }
+
+      
     }
 }
