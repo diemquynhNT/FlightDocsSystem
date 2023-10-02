@@ -1,5 +1,8 @@
 ﻿using DocumentService.Data;
 using DocumentService.Model;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 
 namespace DocumentService.Services
 {
@@ -7,10 +10,14 @@ namespace DocumentService.Services
     {
         private readonly MyDBContext _context;
         private GenerateRandomId random;
-
-        public TypeDocumentService(MyDBContext context) {
+        private readonly HttpClient _httpClient;
+        public TypeDocumentService(MyDBContext context, HttpClient httpClient)
+        {
             _context = context;
             random = new GenerateRandomId();
+            _httpClient = httpClient;
+
+           
         }
         public async Task<TypeDocument> AddNewTypeDocument(TypeDocument typeDocument,string idUser)
         {
@@ -19,6 +26,11 @@ namespace DocumentService.Services
             _context.Add(typeDocument);
             _context.SaveChanges();
             return typeDocument;
+        }
+
+        public void AddPermisstonGroup(string permisstion)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> DeleteType(string idType)
@@ -41,12 +53,6 @@ namespace DocumentService.Services
         {
             return _context.typeDocuments.SingleOrDefault(t => t.IdType == id);
         }
-
-        public Task<TypeDocument> PermisstionGroup()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<TypeDocument> UpdateTypeDocument(string idType, TypeDocument type)
         {
             var typeDocument=_context.typeDocuments.SingleOrDefault(t=>t.TypeName==idType);
@@ -54,5 +60,8 @@ namespace DocumentService.Services
             _context.SaveChanges();
             return typeDocument;
         }
+
+
+       
     }
 }

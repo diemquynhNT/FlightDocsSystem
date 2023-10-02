@@ -29,27 +29,30 @@ namespace DocumentService.Controllers
             _context = idocument;
             _mapper = imapper;
         }
-        [Authorize(Policy = "NoPermissionPolicy")]
+        [Authorize(Policy = "ReadPolicy")]
         [HttpGet("ListAllDocument")]
         public List<Documents> ListAllDocument()
         {
             return _context.GetAllDocument();
 
         }
+        [Authorize(Policy = "ReadPolicy")]
         [HttpGet("ListAllDocumentForUser")]
         public List<Documents> ListAllDocumentForUser(string idUser)
         {
             return _context.GetAllDocumentByIdUser(idUser);
 
         }
+        [Authorize(Policy = "ReadPolicy")]
         [HttpGet("GetDetail")]
         public Task<Documents> GetDocumentById(string idDoc)
         {
             return _context.GetDocumentById(idDoc);
 
         }
-
+      
         [HttpPost("PostSingleFile")]
+        [Authorize(Policy = "ReadModifyPolicy")]
         public async Task<ActionResult> PostSingleFile(string IdUser, string idFlight,[FromForm]DocumentFileVM doc,IFormFile file)
         {
             if (file == null)
@@ -68,7 +71,7 @@ namespace DocumentService.Controllers
                 throw;
             }
         }
-
+        [Authorize(Policy = "ReadModifyPolicy")]
         [HttpDelete("DeleteDocument")]
         public async Task<ActionResult> DeleteDocument(string idUser,string idDoc)
         {

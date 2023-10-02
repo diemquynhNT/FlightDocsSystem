@@ -9,5 +9,6 @@ namespace DocumentService.Services
         public Task<Flight> AddFlight(Flight flight);
         public Task<Flight> UpdateFlight(Flight flight,string idFlight);
         public Task<bool> DeleteFlight(string id);
+      
     }
 }

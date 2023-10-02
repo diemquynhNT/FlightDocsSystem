@@ -36,7 +36,7 @@ namespace UserService.Controllers
         }
 
         [HttpPost("AddNewUser")]
-        public async Task<ActionResult> AddNewUser([FromForm] UserModel userModel)
+        public async Task<ActionResult> AddNewUser([FromBody] UserModel userModel)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace UserService.Controllers
 
 
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(string idUser, [FromForm] UserModel userModel)
+        public async Task<IActionResult> UpdateUser(string idUser, [FromBody] UserModel userModel)
         {
             var userFind = await _context.GetUserById(idUser);
             if (userFind == null)

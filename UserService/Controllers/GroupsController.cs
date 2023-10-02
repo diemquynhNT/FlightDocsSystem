@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Dto;
@@ -22,18 +23,20 @@ namespace UserService.Controllers
         }
 
         [HttpGet("ListAllGroup")]
+        [Authorize("Admin")]
         public List<Groups> ListAllGroup()
         {
             return _context.GetAllGroup();
 
         }
+        [Authorize("Admin")]
         [HttpGet("GetDetail")]
         public Task<Groups> GetGroupById(string idType)
         {
             return _context.GetGroupById(idType);
 
         }
-
+ 
         [HttpPost("AddNewGroup")]
         public async Task<ActionResult> AddNewGroup([FromForm] GroupsModel groupModel, string idUser)
         {
@@ -51,6 +54,7 @@ namespace UserService.Controllers
 
 
         [HttpPut("UpdateGroup")]
+        [Authorize("Admin")]
         public async Task<IActionResult> UpdateGroup(string idGroup, [FromForm] GroupsModel groupModel)
         {
             var groupFind = await _context.GetGroupById(idGroup);
@@ -60,9 +64,19 @@ namespace UserService.Controllers
             await _context.UpdateGroup( groupFind,idGroup);
             return Ok(" cap nhat thanh cong");
         }
-
+        [HttpPut("UpdatePermistion")]
+        [Authorize("Admin")]
+        public async Task<IActionResult> UpdatePermistion(string idGroup, string per)
+        {
+            var groupFind = await _context.GetGroupById(idGroup);
+            if (groupFind == null)
+                return BadRequest("khong tim thay");
+            await _context.UpdatePermisstionGroup(idGroup, per);
+            return Ok(" cap nhat thanh cong");
+        }
 
         [HttpDelete("DeleteGroup")]
+        [Authorize("Admin")]
         public async Task<ActionResult> DeleteGroup(string idGroup)
         {
             try

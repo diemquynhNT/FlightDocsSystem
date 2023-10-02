@@ -10,5 +10,6 @@ namespace UserService.Services
         public Task<Groups> AddNewGroup(Groups group,string idUser);
         public Task<Groups> UpdateGroup(Groups group, string idGroup);
         public Task<bool> DeleteGroup(string idGroup);
+        public Task<Groups> UpdatePermisstionGroup(string idGroup,string per);
     }
 }

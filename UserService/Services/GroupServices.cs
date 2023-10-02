@@ -55,5 +55,13 @@ namespace UserService.Services
             _context.SaveChanges();
             return g;
         }
+
+        public async Task<Groups> UpdatePermisstionGroup(string idGroup, string per)
+        {
+            var g = _context.groups.SingleOrDefault(t => t.idGroup == idGroup);
+            g.permissionGroup = per;
+            _context.SaveChanges();
+            return g;
+        }
     }
 }

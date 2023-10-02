@@ -15,6 +15,7 @@ namespace DocumentService.Model
         public string Creator { get; set; }
 
         public virtual ICollection<Documents> documents { get; set; }
+        public virtual ICollection<Assignment> assigments { get; set; }
 
     }
 }

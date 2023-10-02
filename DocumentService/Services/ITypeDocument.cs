@@ -9,6 +9,6 @@ namespace DocumentService.Services
         public Task<TypeDocument> AddNewTypeDocument(TypeDocument typeDocument, string idUser);
         public Task<TypeDocument> UpdateTypeDocument(string idType,TypeDocument type);
         public Task<bool> DeleteType(string idType);
-        public Task<TypeDocument> PermisstionGroup();
+        public void AddPermisstonGroup(string permisstion);
     }
 }
