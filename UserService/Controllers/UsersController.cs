@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -23,18 +24,20 @@ namespace UserService.Controllers
         }
 
         [HttpGet("GetAllUser")]
+       
         public List<User> GetAllUser()
         {
             return _context.GetAllUser();
 
         }
+        [Authorize("admin")]
         [HttpGet("GetDetail")]
         public Task<User> GetUserById(string idUser)
         {
             return _context.GetUserById(idUser);
 
         }
-
+     
         [HttpPost("AddNewUser")]
         public async Task<ActionResult> AddNewUser([FromBody] UserModel userModel)
         {

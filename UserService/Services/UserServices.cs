@@ -117,7 +117,7 @@ namespace UserService.Services
                 // Adding roles to the token
                 Claims = new Dictionary<string, object>
                 {
-                    { "roles", user.idGroup }
+                    { "roles", per.nameGroup }
                 },
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey
                 (secretKeyBytes), SecurityAlgorithms.HmacSha512Signature)

@@ -10,12 +10,12 @@ namespace DocumentService.Services
     {
         private readonly MyDBContext _context;
         private GenerateRandomId random;
-        private readonly HttpClient _httpClient;
-        public TypeDocumentService(MyDBContext context, HttpClient httpClient)
+
+        public TypeDocumentService(MyDBContext context)
         {
             _context = context;
             random = new GenerateRandomId();
-            _httpClient = httpClient;
+          
 
            
         }

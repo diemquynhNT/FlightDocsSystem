@@ -23,13 +23,11 @@ namespace UserService.Controllers
         }
 
         [HttpGet("ListAllGroup")]
-        [Authorize("Admin")]
         public List<Groups> ListAllGroup()
         {
             return _context.GetAllGroup();
 
         }
-        [Authorize("Admin")]
         [HttpGet("GetDetail")]
         public Task<Groups> GetGroupById(string idType)
         {

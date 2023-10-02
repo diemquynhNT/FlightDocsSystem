@@ -29,13 +29,14 @@ namespace DocumentService.Controllers
             _context = idocument;
             _mapper = imapper;
         }
-        [Authorize(Policy = "ReadPolicy")]
+        [Authorize(Policy = "ReadModifyPolicy")]
         [HttpGet("ListAllDocument")]
         public List<Documents> ListAllDocument()
         {
             return _context.GetAllDocument();
 
         }
+       
         [Authorize(Policy = "ReadPolicy")]
         [HttpGet("ListAllDocumentForUser")]
         public List<Documents> ListAllDocumentForUser(string idUser)
@@ -53,7 +54,7 @@ namespace DocumentService.Controllers
       
         [HttpPost("PostSingleFile")]
         [Authorize(Policy = "ReadModifyPolicy")]
-        public async Task<ActionResult> PostSingleFile(string IdUser, string idFlight,[FromForm]DocumentFileVM doc,IFormFile file)
+        public async Task<ActionResult> PostSingleFile(string IdUser, string idFlight,[FromBody]DocumentFileVM doc,IFormFile file)
         {
             if (file == null)
             {

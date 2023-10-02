@@ -8,7 +8,7 @@ namespace DocumentService.Model
         public string idType { get; set; }
         public string permisstion { get; set; }
 
-        public TypeDocument typeDocument { get; set; }
+        //public TypeDocument typeDocument { get; set; }
 
     }
 }
