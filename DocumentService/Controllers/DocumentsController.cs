@@ -72,7 +72,6 @@ namespace DocumentService.Controllers
                 throw;
             }
         }
-        [Authorize(Policy = "ReadModifyPolicy")]
         [HttpDelete("DeleteDocument")]
         public async Task<ActionResult> DeleteDocument(string idUser,string idDoc)
         {
