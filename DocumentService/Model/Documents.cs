@@ -26,6 +26,6 @@ namespace DocumentService.Model
         public string IdType { get; set; }
         [ForeignKey("IdType")]
         public TypeDocument typeDocument { get; set; }
-
+        public virtual ICollection<Assignments> Assignments { get; set; }
     }
 }

@@ -20,7 +20,7 @@ builder.Services.AddDbContext<MyDBContext>(option =>
 builder.Services.AddScoped<IDocument, DocumentServices>();
 builder.Services.AddScoped<IFlight, FlightService>();
 builder.Services.AddScoped<ITypeDocument, TypeDocumentService>();
-
+builder.Services.AddScoped<IGroup, GroupServices>();
 
 builder.Services.Configure<IISServerOptions>(options =>
 {

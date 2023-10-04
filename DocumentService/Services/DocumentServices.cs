@@ -1,6 +1,5 @@
 ﻿using DocumentService.Data;
 using DocumentService.Model;
-using Microsoft.AspNetCore.Hosting;
 using System.Security.Cryptography;
 
 namespace DocumentService.Services
@@ -39,16 +38,34 @@ namespace DocumentService.Services
         {
             return _context.Documents.Where(t=>t.IdDocument == id).FirstOrDefault();
         }
-
-        public async Task<Documents> ImportDocument(string idUser,string IdFlight, IFormFile file, Documents documents)
+        public void AssignmentGroup(string idDoc,List<string> listGroup)
         {
-            documents.IdDocument = "D" + GenerateRandomStringId(5);
+           
+        }
+
+        public async Task<Documents> ImportDocument(string idUser,string IdFlight, 
+            List<string> listGroup, IFormFile file, Documents documents)
+        {
+            var flights = _context.flights.Where(t => t.IdFlight == IdFlight).FirstOrDefault();
+            if(flights.StatusFlight == false) {
+                return null;
+            }
+            var id= "D" + GenerateRandomStringId(5);
+            documents.IdDocument = id;
             documents.CreateDate = DateTime.Now;
             documents.IdUser = idUser;
             documents.IdFlight = IdFlight;
             documents.version = "1.0";
             if (documents.NameDoc == null)
                 documents.NameDoc = file.FileName;
+
+            foreach (var g in listGroup)
+            {
+                Assignments phancong = new Assignments();
+                phancong.idGroup = g;
+                phancong.idDoc = id ;
+                _context.assignments.Add(phancong);
+            }
 
             if (file.Length > 0)
             {
@@ -69,10 +86,29 @@ namespace DocumentService.Services
             return documents;
         }
 
+        public void CopyFile(string nameFile)
+        {
+            var sourceDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "DocumentUploads");
+            var sourceFilePath = Path.Combine(sourceDirectory, "demo");
+
+            var destinationDirectory = Directory.GetCurrentDirectory();
+            var destinationFilePath = Path.Combine(destinationDirectory, nameFile);
+
+            // Kiểm tra xem tệp nguồn có tồn tại không
+            if (!File.Exists(sourceFilePath))
+            {
+                // Xử lý khi tệp nguồn không tồn tại
+                throw new FileNotFoundException("Tệp nguồn không tồn tại.");
+            }
+
+            // Copy file
+            File.Copy(sourceFilePath, destinationFilePath, true);
+
+        }
         //cap thi thi tạo lai doc
         public Task<Documents> UpdateDocument(string idUser)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
 
@@ -95,5 +131,12 @@ namespace DocumentService.Services
         {
             return _context.Documents.Where(t => t.IdUser == idUser).ToList();
         }
+
+        public List<Documents> GetAllDocumentByIdFlight(string idUser)
+        {
+            throw new NotImplementedException();
+        }
+
+       
     }
 }

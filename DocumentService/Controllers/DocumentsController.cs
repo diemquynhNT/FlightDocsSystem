@@ -29,7 +29,7 @@ namespace DocumentService.Controllers
             _context = idocument;
             _mapper = imapper;
         }
-        [Authorize(Policy = "ReadModifyPolicy")]
+        
         [HttpGet("ListAllDocument")]
         public List<Documents> ListAllDocument()
         {
@@ -37,26 +37,26 @@ namespace DocumentService.Controllers
 
         }
        
-        [Authorize(Policy = "ReadPolicy")]
+       // [Authorize(Policy = "ReadPolicy")]
         [HttpGet("ListAllDocumentForUser")]
         public List<Documents> ListAllDocumentForUser(string idUser)
         {
             return _context.GetAllDocumentByIdUser(idUser);
 
         }
-        [Authorize(Policy = "ReadPolicy")]
+       // [Authorize(Policy = "ReadPolicy")]
         [HttpGet("GetDetail")]
         public Task<Documents> GetDocumentById(string idDoc)
         {
             return _context.GetDocumentById(idDoc);
 
         }
-      
+       
         [HttpPost("PostSingleFile")]
-        [Authorize(Policy = "ReadModifyPolicy")]
-        public async Task<ActionResult> PostSingleFile(string IdUser, string idFlight,[FromBody]DocumentFileVM doc,IFormFile file)
+        public async Task<ActionResult> PostSingleFile(string IdUser, string idFlight,
+           [FromForm] DocumentFileVM doc)
         {
-            if (file == null)
+            if (doc.file == null)
             {
                 return BadRequest();
             }
@@ -64,7 +64,7 @@ namespace DocumentService.Controllers
             try
             {
                 var documents = _mapper.Map<Documents>(doc);
-                await _context.ImportDocument(IdUser,idFlight,file,documents);
+                await _context.ImportDocument(IdUser,idFlight,doc.listGroup,doc.file,documents);
                 return Ok();
             }
             catch (Exception)

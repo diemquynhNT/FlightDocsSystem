@@ -14,6 +14,10 @@ namespace DocumentService.Dto
 
         public string IdType { get; set; }
 
-       
+        public List<string> listGroup { get; set; }
+        public IFormFile file { get; set; }
+
+
+
     }
 }
