@@ -132,9 +132,9 @@ namespace DocumentService.Services
             return _context.Documents.Where(t => t.IdUser == idUser).ToList();
         }
 
-        public List<Documents> GetAllDocumentByIdFlight(string idUser)
+        public List<Documents> GetAllDocumentByIdFlight(string idFlight)
         {
-            throw new NotImplementedException();
+            return _context.Documents.Where(t => t.IdUser == idFlight).ToList();
         }
 
        

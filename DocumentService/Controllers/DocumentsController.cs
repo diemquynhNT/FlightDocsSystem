@@ -7,14 +7,7 @@ using DocumentService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Data.SqlClient.Server;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Net.Http.Headers;
-using System.Globalization;
-using System.IO.Compression;
-using System.Net;
+ 
 
 namespace DocumentService.Controllers
 {
@@ -36,15 +29,20 @@ namespace DocumentService.Controllers
             return _context.GetAllDocument();
 
         }
-       
-       // [Authorize(Policy = "ReadPolicy")]
+  
         [HttpGet("ListAllDocumentForUser")]
         public List<Documents> ListAllDocumentForUser(string idUser)
         {
             return _context.GetAllDocumentByIdUser(idUser);
 
         }
-       // [Authorize(Policy = "ReadPolicy")]
+        [HttpGet("ListAllDocumentForFlight")]
+        public List<Documents> ListAllDocumentForFlight(string ìdFlight)
+        {
+            return _context.GetAllDocumentByIdFlight(ìdFlight);
+
+        }
+
         [HttpGet("GetDetail")]
         public Task<Documents> GetDocumentById(string idDoc)
         {

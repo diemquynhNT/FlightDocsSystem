@@ -28,9 +28,15 @@ namespace DocumentService.Services
             return typeDocument;
         }
 
-        public void AddPermisstonGroup(string permisstion)
+        public void AddPermisstonGroup(string idGroup, string per, string idType)
         {
-            throw new NotImplementedException();
+            Permisstions permisstions = new Permisstions();
+            permisstions.idGroup = idGroup;
+            permisstions.idType= idType;
+            permisstions.permisstion = per;
+            _context.Add(permisstions);
+            _context.SaveChanges();
+            
         }
 
         public async Task<bool> DeleteType(string idType)
