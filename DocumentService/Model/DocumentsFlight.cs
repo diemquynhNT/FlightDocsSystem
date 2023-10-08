@@ -3,14 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DocumentService.Model
 {
-    public class Documents
+    public class DocumentsFlight
     {
         [Key]
         public string IdDocument { get; set; }
         [MaxLength(100)]
         public string NameDoc { get; set; }
-        
-
         public DateTime CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string? Note { get; set; }

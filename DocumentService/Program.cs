@@ -50,17 +50,17 @@ builder.Services.AddAuthentication
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("NoPermissionPolicy", policy =>
-        policy.RequireClaim("Permission", "NoPermission")); 
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("NoPermissionPolicy", policy =>
+//        policy.RequireClaim("Permission", "NoPermission")); 
 
-    options.AddPolicy("ReadPolicy", policy =>
-        policy.RequireClaim("Permission", "Read"));
+//    options.AddPolicy("ReadPolicy", policy =>
+//        policy.RequireClaim("Permission", "Read"));
 
-    options.AddPolicy("ReadModifyPolicy", policy =>
-     policy.RequireClaim("Permission", "ReadModify"));
-});
+//    options.AddPolicy("ReadModifyPolicy", policy =>
+//     policy.RequireClaim("Permission", "ReadModify"));
+//});
 
 
 var app = builder.Build();

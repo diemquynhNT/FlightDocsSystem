@@ -8,6 +8,8 @@ namespace DocumentService.Dto
         [MaxLength(100)]
         public string TypeName { get; set; }
         public string? Note { get; set; }
+        public List<GroupPerVM> groupPer { get; set; }
+
 
     }
 }

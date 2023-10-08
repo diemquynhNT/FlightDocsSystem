@@ -19,7 +19,7 @@ namespace DocumentService.Model
         [Required]
         public string AirplaneNo { get; set; }
 
-        public virtual ICollection<Documents> documents { get; set; }
+        public virtual ICollection<DocumentsFlight> documents { get; set; }
 
     }
 }

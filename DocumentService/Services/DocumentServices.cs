@@ -1,6 +1,9 @@
 ﻿using DocumentService.Data;
 using DocumentService.Model;
+using System.Reflection.Metadata;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace DocumentService.Services
 {
@@ -23,28 +26,24 @@ namespace DocumentService.Services
                 return String.Concat(Array.ConvertAll(bytes, x => x.ToString("X2")));
             }
         }
-        public Task<Documents> AddManulDocument()
+        public Task<DocumentsFlight> AddManulDocument()
         {
             throw new NotImplementedException();
         }
 
 
-        public List<Documents> GetAllDocument()
+        public List<DocumentsFlight> GetAllDocument()
         {
             return _context.Documents.ToList();
         }
 
-        public async Task<Documents> GetDocumentById(string id)
+        public async Task<DocumentsFlight> GetDocumentById(string id)
         {
             return _context.Documents.Where(t=>t.IdDocument == id).FirstOrDefault();
         }
-        public void AssignmentGroup(string idDoc,List<string> listGroup)
-        {
-           
-        }
-
-        public async Task<Documents> ImportDocument(string idUser,string IdFlight, 
-            List<string> listGroup, IFormFile file, Documents documents)
+        
+        public async Task<DocumentsFlight> ImportDocument(string idUser,string IdFlight, 
+            List<string> listGroup, IFormFile file, DocumentsFlight documents)
         {
             var flights = _context.flights.Where(t => t.IdFlight == IdFlight).FirstOrDefault();
             if(flights.StatusFlight == false) {
@@ -94,19 +93,16 @@ namespace DocumentService.Services
             var destinationDirectory = Directory.GetCurrentDirectory();
             var destinationFilePath = Path.Combine(destinationDirectory, nameFile);
 
-            // Kiểm tra xem tệp nguồn có tồn tại không
             if (!File.Exists(sourceFilePath))
             {
-                // Xử lý khi tệp nguồn không tồn tại
                 throw new FileNotFoundException("Tệp nguồn không tồn tại.");
             }
-
-            // Copy file
+            
             File.Copy(sourceFilePath, destinationFilePath, true);
 
         }
         //cap thi thi tạo lai doc
-        public Task<Documents> UpdateDocument(string idUser)
+        public Task<DocumentsFlight> UpdateDocument(string idUser)
         {
             return null;
         }
@@ -127,16 +123,33 @@ namespace DocumentService.Services
 
         }
 
-        public List<Documents> GetAllDocumentByIdUser(string idUser)
+        public List<DocumentsFlight> GetAllDocumentByIdUser(string idUser)
         {
             return _context.Documents.Where(t => t.IdUser == idUser).ToList();
         }
 
-        public List<Documents> GetAllDocumentByIdFlight(string idFlight)
+        public List<DocumentsFlight> GetAllDocumentByIdFlight(string idFlight)
         {
             return _context.Documents.Where(t => t.IdUser == idFlight).ToList();
         }
 
-       
+        public bool HasReadAccess(string idGroup, string idDocument)
+        {
+            var per=_context.permisstions.Where(t=>t.idGroup==idGroup).FirstOrDefault();
+            var doc=_context.assignments.Where(t=>t.idGroup==idGroup&&t.idDoc==idDocument).FirstOrDefault();
+            if (doc != null && per.permisstion == "Readonly")
+                return true;
+            return false;
+           
+        }
+
+        public bool HasEditAccess(string idGroup, string idDocument)
+        {
+            var per = _context.permisstions.Where(t => t.idGroup == idGroup).FirstOrDefault();
+            var doc = _context.assignments.Where(t => t.idGroup == idGroup && t.idDoc == idDocument).FirstOrDefault();
+            if (doc != null && per.permisstion == "Readedit")
+                return true;
+            return false;
+        }
     }
 }

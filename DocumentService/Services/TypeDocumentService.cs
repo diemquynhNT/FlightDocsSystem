@@ -27,12 +27,16 @@ namespace DocumentService.Services
             _context.SaveChanges();
             return typeDocument;
         }
+        public string getId(TypeDocument typeDocument)
+        {
+            return typeDocument.IdType;
+        }
 
-        public void AddPermisstonGroup(string idGroup, string per, string idType)
+        public void AddPermisstonGroup(string idGroup, string per, TypeDocument typeDocument)
         {
             Permisstions permisstions = new Permisstions();
             permisstions.idGroup = idGroup;
-            permisstions.idType= idType;
+            permisstions.idType= typeDocument.IdType;
             permisstions.permisstion = per;
             _context.Add(permisstions);
             _context.SaveChanges();
@@ -48,6 +52,11 @@ namespace DocumentService.Services
             _context.SaveChanges();
             return true;
 
+        }
+
+        public List<Permisstions> GetAllGroupByIdType(string id)
+        {
+            return _context.permisstions.Where(t=>t.idType==id).ToList();
         }
 
         public List<TypeDocument> GetAllType()
@@ -67,7 +76,9 @@ namespace DocumentService.Services
             return typeDocument;
         }
 
-
-       
+        public List<Permisstions> GetAllPer()
+        {
+            return _context.permisstions.ToList();
+        }
     }
 }

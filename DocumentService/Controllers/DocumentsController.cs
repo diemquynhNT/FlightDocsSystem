@@ -7,7 +7,7 @@ using DocumentService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
- 
+using System.Reflection.Metadata;
 
 namespace DocumentService.Controllers
 {
@@ -17,34 +17,36 @@ namespace DocumentService.Controllers
     {
         private readonly IDocument _context;
         private readonly IMapper _mapper;
+        private readonly IGroup _group;
 
-        public DocumentsController(IDocument idocument,IMapper imapper) {
+        public DocumentsController(IDocument idocument,IMapper imapper,IGroup groups) {
             _context = idocument;
             _mapper = imapper;
+            _group = groups;
         }
         
         [HttpGet("ListAllDocument")]
-        public List<Documents> ListAllDocument()
+        public List<DocumentsFlight> ListAllDocument()
         {
             return _context.GetAllDocument();
 
         }
   
         [HttpGet("ListAllDocumentForUser")]
-        public List<Documents> ListAllDocumentForUser(string idUser)
+        public List<DocumentsFlight> ListAllDocumentForUser(string idUser)
         {
             return _context.GetAllDocumentByIdUser(idUser);
 
         }
         [HttpGet("ListAllDocumentForFlight")]
-        public List<Documents> ListAllDocumentForFlight(string ìdFlight)
+        public List<DocumentsFlight> ListAllDocumentForFlight(string ìdFlight)
         {
             return _context.GetAllDocumentByIdFlight(ìdFlight);
 
         }
 
         [HttpGet("GetDetail")]
-        public Task<Documents> GetDocumentById(string idDoc)
+        public Task<DocumentsFlight> GetDocumentById(string idDoc)
         {
             return _context.GetDocumentById(idDoc);
 
@@ -61,7 +63,7 @@ namespace DocumentService.Controllers
 
             try
             {
-                var documents = _mapper.Map<Documents>(doc);
+                var documents = _mapper.Map<DocumentsFlight>(doc);
                 await _context.ImportDocument(IdUser,idFlight,doc.listGroup,doc.file,documents);
                 return Ok();
             }
@@ -84,6 +86,33 @@ namespace DocumentService.Controllers
             {
                 throw;
             }
+        }
+
+        [HttpGet("GetDocument")]
+        public async Task<IActionResult> GetDocumentById(string documentId, string groupId)
+        {
+            try {
+                DocumentsFlight document =  await _context.GetDocumentById(documentId);
+                var group = _group.GetGroupById(groupId);
+
+                if (document != null && group != null)
+                {
+                    if (_context.HasReadAccess(groupId, documentId) || _context.HasEditAccess(groupId, documentId))
+                    {
+                        var docVM = _mapper.Map<DocumentVM>(document);
+                        return Ok(docVM);
+                    }
+
+                    return Forbid("Khong co quyen truy cap");
+                }
+
+                return NotFound("khong tim thay");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+           
         }
 
 

@@ -9,7 +9,7 @@ namespace DocumentService.Data
         public MyDBContext(DbContextOptions<MyDBContext> options) : base(options) { }
 
         #region
-        public DbSet<Documents> Documents { get; set; }
+        public DbSet<DocumentsFlight> Documents { get; set; }
         public DbSet<Flight> flights { get; set; }
         public DbSet<TypeDocument> typeDocuments { get; set; }
         public DbSet<Assignments> assignments { get; set; }

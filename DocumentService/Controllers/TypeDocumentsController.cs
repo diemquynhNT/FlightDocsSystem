@@ -27,6 +27,12 @@ namespace DocumentService.Controllers
             return _context.GetAllType();
 
         }
+        [HttpGet("ListAllPer")]
+        public List<Permisstions> ListAllPer()
+        {
+            return _context.GetAllPer();
+
+        }
         [HttpGet("GetDetail")]
         public Task<TypeDocument> GetTypeById(string idType)
         {
@@ -35,12 +41,16 @@ namespace DocumentService.Controllers
         }
 
         [HttpPost("AddNewType")]
-        public async Task<ActionResult> AddNewType([FromForm] TypeDocumentModel type,string idUser)
+        public async Task<ActionResult> AddNewType(string idUser,[FromBody]TypeDocumentModel type )
         {
             try
             {
                 var typeDocument = _mapper.Map<TypeDocument>(type);
                 await _context.AddNewTypeDocument(typeDocument,idUser);
+                foreach (var p in type.groupPer)
+                {
+                    _context.AddPermisstonGroup(p.idGroup,p.per, typeDocument);
+                }
                 return Ok("tao thanh cong");
             }
             catch (Exception)

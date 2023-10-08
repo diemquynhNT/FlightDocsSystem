@@ -10,7 +10,7 @@ namespace DocumentService.Model
         public string idDoc { get; set; }
 
         public Groups groups { get; set; }
-        public Documents documents { get; set; }
+        public DocumentsFlight documents { get; set; }
 
     }
 }
