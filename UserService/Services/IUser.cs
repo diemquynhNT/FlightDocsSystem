@@ -14,7 +14,7 @@ namespace UserService.Services
         public bool IsValidUser(string idUser);
      
         public Task<User> LoginUser(LoginModel login);
-        public string GetToken(User user);
+        public Task<string> GetToken(User user);
         public Task<User> ChangeAccount(User users);
         public Task<string> ConfirmAccount(string idUser, string passWord);
         public Task<User> TerminateUser(User user);
@@ -23,6 +23,7 @@ namespace UserService.Services
         public bool ValidatePassword(string password);
         public bool ValidateEmail(string password);
         public bool ValidatePhone(string password);
+        public Task<string> GetGroupName(string groupId);
 
 
 

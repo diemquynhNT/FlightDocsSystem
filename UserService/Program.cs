@@ -27,6 +27,7 @@ builder.Services.Configure<IISServerOptions>(options =>
     options.MaxRequestBodySize = 1073741824;
 });
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddHttpClient<UserServices>();
 
 //JWT
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));

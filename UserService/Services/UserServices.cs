@@ -3,7 +3,9 @@ using MailKit.Security;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MimeKit;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -18,11 +20,13 @@ namespace UserService.Services
         private MyDBContext _context;
         private GenerateAlphanumericId generateId;
         private readonly AppSettings _appSettings;
+        private readonly HttpClient _httpClient;
 
-        public UserServices(MyDBContext context, IOptionsMonitor<AppSettings> optionsMonitor) {
+        public UserServices(MyDBContext context, IOptionsMonitor<AppSettings> optionsMonitor, HttpClient httpClient) {
             _context = context;
             generateId = new GenerateAlphanumericId();
             _appSettings = optionsMonitor.CurrentValue;
+            _httpClient = httpClient;
         }
         public bool ValidatePassword(string password)
         {
@@ -92,15 +96,30 @@ namespace UserService.Services
         {
             throw new NotImplementedException();
         }
+        public async Task<string> GetGroupName(string groupId)
+        {
+            var url = $"https://localhost:7205/api/Groups/GetDetail?idType={groupId}";
 
-        public string GetToken(User user)
+            using (var response = await _httpClient.GetAsync(url))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                var groupName = JObject.Parse(responseContent)["nameGroup"].ToString();
+
+                return groupName;
+            }
+        }
+
+       public async Task<string> GetToken(User user)
         {
             var jwtToken = new JwtSecurityTokenHandler();
             var secretKeyBytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
-            var per = _context.groups.Where(t => t.idGroup == user.idGroup).FirstOrDefault();
+            string nameGroup = await GetGroupName(user.idUser);
+            //var nameGroup = "admin";
             var tokenDescription = new SecurityTokenDescriptor
             {
-                //đặc trưng người dùng
                 //TRUYỀN vào danh sách claim
                 Subject = new ClaimsIdentity(new[]
                 {
@@ -108,17 +127,17 @@ namespace UserService.Services
                     new Claim(ClaimTypes.Email, user.emailAddress),
                     new Claim("UserName", user.userName),
                     new Claim("Id", user.idUser.ToString()),
-                    new Claim("Permission", per.permissionGroup),
+                    new Claim(ClaimTypes.Role, nameGroup),
                     new Claim("TokenId", Guid.NewGuid().ToString()),
                 }),
 
                 Expires = DateTime.UtcNow.AddMinutes(1),
 
                 // Adding roles to the token
-                Claims = new Dictionary<string, object>
-                {
-                    { "roles", per.nameGroup }
-                },
+                //Claims = new Dictionary<string, object>
+                //{
+                //    { "roles", nameGroup }
+                //},
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey
                 (secretKeyBytes), SecurityAlgorithms.HmacSha512Signature)
             };

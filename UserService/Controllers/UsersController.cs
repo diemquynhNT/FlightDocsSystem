@@ -37,7 +37,14 @@ namespace UserService.Controllers
             return _context.GetUserById(idUser);
 
         }
-     
+        [HttpGet("GetString")]
+        public Task<string> GetRole(string id)
+        {
+            return _context.GetGroupName(id);
+
+        }
+
+
         [HttpPost("AddNewUser")]
         public async Task<ActionResult> AddNewUser([FromBody] UserModel userModel)
         {

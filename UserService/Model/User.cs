@@ -25,9 +25,8 @@ namespace UserService.Model
         [Required]
         public string passWord { get; set; }
 
-        public string idGroup { get; set; }
-        [ForeignKey("idGroup")]
-        public Groups groups { get; set; }
+        public string? idGroup { get; set; }
+        
 
 
     }
