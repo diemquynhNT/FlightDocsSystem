@@ -22,29 +22,30 @@ namespace UserService.Controllers
             _mapper = mapper;
 
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet("GetAllUser")]
-       
         public List<User> GetAllUser()
         {
             return _context.GetAllUser();
 
         }
-        [Authorize("admin")]
+        
         [HttpGet("GetDetail")]
+        [Authorize(Roles = "admin")]
         public Task<User> GetUserById(string idUser)
         {
             return _context.GetUserById(idUser);
 
         }
         [HttpGet("GetString")]
+        [Authorize(Roles = "admin")]
         public Task<string> GetRole(string id)
         {
             return _context.GetGroupName(id);
 
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost("AddNewUser")]
         public async Task<ActionResult> AddNewUser([FromBody] UserModel userModel)
         {
@@ -122,6 +123,7 @@ namespace UserService.Controllers
                 throw;
             }
         }
+        
 
         [HttpPost("Login")]
         public async Task<IActionResult> Validate([FromBody] LoginModel model)

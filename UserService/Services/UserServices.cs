@@ -1,13 +1,17 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using Newtonsoft.Json.Linq;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using UserService.Data;
 using UserService.Dto;
@@ -111,46 +115,54 @@ namespace UserService.Services
                 return groupName;
             }
         }
-
-       public async Task<string> GetToken(User user)
-        {
-            var jwtToken = new JwtSecurityTokenHandler();
-            var secretKeyBytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
-            string nameGroup = await GetGroupName(user.idUser);
-            //var nameGroup = "admin";
-            var tokenDescription = new SecurityTokenDescriptor
-            {
-                //TRUYỀN vào danh sách claim
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.nameUser),
-                    new Claim(ClaimTypes.Email, user.emailAddress),
-                    new Claim("UserName", user.userName),
-                    new Claim("Id", user.idUser.ToString()),
-                    new Claim(ClaimTypes.Role, nameGroup),
-                    new Claim("TokenId", Guid.NewGuid().ToString()),
-                }),
-
-                Expires = DateTime.UtcNow.AddMinutes(1),
-
-                // Adding roles to the token
-                //Claims = new Dictionary<string, object>
-                //{
-                //    { "roles", nameGroup }
-                //},
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey
-                (secretKeyBytes), SecurityAlgorithms.HmacSha512Signature)
-            };
-
-            var token = jwtToken.CreateToken(tokenDescription);
-            return jwtToken.WriteToken(token);//tra ve chuoi 
-        }
+      
+       
 
         public async Task<User> LoginUser(LoginModel login)
         {
             var user = _context.users.SingleOrDefault(u => u.userName == login.UserName
             && u.passWord == login.Passworduser.ToString());
             return user;
+        }
+        private async Task<string> GenerateToken(User users)
+        {
+            var jwtToken = new JwtSecurityTokenHandler();
+            var secretKeyBytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
+            string id = users.idGroup;
+            string nameGroup = await GetGroupName(id);
+            var tokenDescription = new SecurityTokenDescriptor
+            {
+                //đặc trưng người dùng
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name,users.nameUser),
+                    new Claim(ClaimTypes.Email, users.emailAddress),
+                    new Claim("UserName", users.userName),
+                    new Claim("Id", users.idUser),
+
+                }),
+
+                //// Adding roles to the token
+                Claims = new Dictionary<string, object>
+                {
+                    { "roles", nameGroup }
+                },
+                Expires = DateTime.UtcNow.AddMinutes(5),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey
+                (secretKeyBytes), SecurityAlgorithms.HmacSha512Signature)
+
+
+            };
+
+            var token = jwtToken.CreateToken(tokenDescription);
+            return jwtToken.WriteToken(token);
+
+        }
+
+        public Task<string> GetToken(User user)
+        {
+            var token = GenerateToken(user);
+            return token;
         }
 
         public Task<User> LogoutUser()
@@ -206,6 +218,8 @@ namespace UserService.Services
             _context.SaveChanges();
             return users;
         }
+
+       
     }
 
      
