@@ -18,7 +18,6 @@ builder.Services.AddDbContext<MyDBContext>(option =>
 });
 
 builder.Services.AddScoped<IUser, UserServices>();
-builder.Services.AddScoped<IGroup, GroupServices>();
 
 
 

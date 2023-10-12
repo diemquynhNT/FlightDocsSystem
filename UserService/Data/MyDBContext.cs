@@ -9,7 +9,6 @@ namespace UserService.Data
 
         #region
         public DbSet<User> users { get; set; }
-        public DbSet<Groups> groups { get; set; }
 
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using UserService.Dto;
@@ -15,12 +16,12 @@ namespace UserService.Controllers
     {
         private readonly IUser _context;
         private readonly IMapper _mapper;
+       
 
         public UsersController(IUser context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-
         }
         [Authorize(Roles = "admin")]
         [HttpGet("GetAllUser")]
@@ -152,6 +153,19 @@ namespace UserService.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Route("logout")]
+        public IActionResult Logout()
+        {
+            // Lấy JWT từ yêu cầu gửi từ client-side
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+
+            // Trả về kết quả thành công
+            return Ok(token);
+        }
+
 
 
 
