@@ -154,17 +154,7 @@ namespace UserService.Controllers
 
         }
 
-        [HttpPost]
-        [Route("logout")]
-        public IActionResult Logout()
-        {
-            // Lấy JWT từ yêu cầu gửi từ client-side
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-
-            // Trả về kết quả thành công
-            return Ok(token);
-        }
+       
 
 
 

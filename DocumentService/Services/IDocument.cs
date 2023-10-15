@@ -10,9 +10,6 @@ namespace DocumentService.Services
         public List<DocumentsFlight> GetAllDocumentByIdUser(string idUser);
         public List<DocumentsFlight> GetAllDocumentByIdFlight(string idUser);
         public Task<DocumentsFlight> GetDocumentById(string id);
-        //add document
-       
-        public Task<DocumentsFlight> AddManulDocument();
         public Task<DocumentsFlight> ImportDocument(string idUser,string IdFlight, List<string> listGroup, IFormFile file,DocumentsFlight documents);
         public Task<DocumentsFlight> UpdateDocument(string idUser);
  
