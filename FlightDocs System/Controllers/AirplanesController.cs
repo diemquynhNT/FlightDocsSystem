@@ -29,7 +29,7 @@ namespace FlightDocs_System.Controllers
         }
 
         [HttpPost("AddAirplane")]
-        public async Task<ActionResult> AddAirplane([FromForm] Airplane airplane)
+        public async Task<ActionResult> AddAirplane([FromBody] Airplane airplane)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace FlightDocs_System.Controllers
 
 
         [HttpPut("UpdateAirplane")]
-        public async Task<IActionResult> UpdateAirplane(string id, [FromForm] Airplane airplane)
+        public async Task<IActionResult> UpdateAirplane(string id, [FromBody] Airplane airplane)
         {
             var air = await _context.GetAirplaneById(id);
             if (air == null)

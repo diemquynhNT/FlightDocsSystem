@@ -23,7 +23,7 @@ namespace UserService.Controllers
             _context = context;
             _mapper = mapper;
         }
-        [Authorize(Roles = "admin")]
+        
         [HttpGet("GetAllUser")]
         public List<User> GetAllUser()
         {

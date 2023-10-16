@@ -121,7 +121,7 @@ namespace UserService.Services
         public async Task<User> LoginUser(LoginModel login)
         {
             var user = _context.users.SingleOrDefault(u => u.userName == login.UserName
-            && u.passWord == login.Passworduser.ToString());
+            && u.passWord == login.Passworduser.ToString() && u.statusUser==true);
             return user;
         }
         private async Task<string> GenerateToken(User users)
